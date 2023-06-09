@@ -1,0 +1,31 @@
+function onEdit(e) {
+  // Exit if the event object or range is undefined
+  if (!e || !e.range) return;
+
+  var sheet = e.range.getSheet();
+  var row = e.range.getRow();
+  var col = e.range.getColumn();
+
+  if (row === 2 && col === 2) {
+    var value = e.range.getValue();
+
+    if (value !== '') {
+      var targetRow = row + 1;
+      var targetRange = sheet.getRange(targetRow, col);
+
+      // Check if the target row already contains data
+      while (targetRange.getValue() !== '') {
+        targetRow++;
+        targetRange = sheet.getRange(targetRow, col);
+      }
+
+      // Move the value to the target row
+      targetRange.setValue(value);
+      e.range.clearContent();
+
+      // Set the active range to B2
+      var activeRange = sheet.getRange('B2');
+      sheet.setActiveRange(activeRange);
+    }
+  }
+}
